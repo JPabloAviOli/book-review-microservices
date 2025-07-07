@@ -257,8 +257,35 @@ El microservicio `book-ms` responde realizando:
 📸 La imagen muestra la ejecución del `DELETE`, la respuesta del servidor y el efecto reflejado al consultar el libro actualizado.
 
 ---
+## 📚 Documentación Swagger (OpenAPI)
 
+Cada microservicio expone su propia documentación OpenAPI mediante Swagger, lo que facilita la visualización y prueba de los endpoints directamente desde el navegador.
 
+### 🔌 Acceso a Swagger
+
+Para efectos de demostración, en este proyecto se expusieron los puertos HTTP de los microservicios `book-ms` y `review-ms` en el archivo `docker-compose.yml`, permitiendo acceder a sus interfaces Swagger desde el navegador:
+
+- `http://localhost:9090/swagger-ui.html` → Book Service
+- `http://localhost:9091/swagger-ui.html` → Review Service
+
+📸 A continuación se muestran las capturas de ambas interfaces:
+
+- `book-ms`: muestra endpoints para crear, listar, actualizar, eliminar y obtener libros
+![Captura de Pantalla 2025-07-06 a la(s) 19 08 26](https://github.com/user-attachments/assets/70c59b21-9338-4979-b275-f2cfd89459a0)
+![Captura de Pantalla 2025-07-06 a la(s) 19 09 06](https://github.com/user-attachments/assets/01b25167-b65b-4615-8f0f-95ece032642d)
+
+- `review-ms`: permite crear, actualizar, listar y eliminar reviews
+![Captura de Pantalla 2025-07-06 a la(s) 19 41 24](https://github.com/user-attachments/assets/ee5f4cca-b3a0-4a85-bdca-535a96c4de09)
+![Captura de Pantalla 2025-07-06 a la(s) 19 41 35](https://github.com/user-attachments/assets/9f8c343c-7fdc-4973-9741-2d35989263e3)
+
+### 📦 Nota técnica
+
+En una arquitectura real con microservicios en producción, **no es necesario exponer los puertos individuales de cada servicio**.  
+La comunicación entre servicios se realiza internamente entre contenedores mediante **Docker networks** o un **Service Discovery** como Eureka, y los clientes acceden a través de un **API Gateway** centralizado.
+
+En este caso, los puertos fueron expuestos únicamente para mostrar Swagger y facilitar las pruebas locales.
+
+---
 Esta arquitectura garantiza sincronización y consistencia entre microservicios manteniendo la independencia y escalabilidad de cada uno.
 
 
