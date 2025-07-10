@@ -68,9 +68,21 @@ Este sistema implementa distintos tipos de flujo OAuth 2.0 según el caso de uso
 
 Cada flujo fue configurado en Keycloak y probado con postman.  
 El uso de PKCE permite mayor seguridad en aplicaciones frontend, ya que evita el envío del `client_secret` y valida la autenticidad del cliente mediante `code_verifier` y `code_challenge`.
+
 ## 🔄 Comunicación y eventos entre microservicios
 
-Este proyecto implementa una comunicación efectiva entre los microservicios `book-ms` y `review-ms` utilizando REST y eventos con Kafka para mantener sincronizada la información.
+Este proyecto implementa una comunicación efectiva entre los microservicios `book-ms` y `review-ms` utilizando tanto:
+
+- **REST** (mediante Feign Client) para llamadas síncronas
+- **Eventos asíncronos con Kafka** para mantener sincronizada la información (por ejemplo, al crear, actualizar o eliminar una review)
+
+🛠️ Para desacoplar la lógica de mensajería, se trabajó con **funciones (Spring Cloud Function)** en lugar de depender directamente del cliente de Kafka.  
+Esto permite:
+
+- Cambiar fácilmente entre **Kafka** y otros brokers como **RabbitMQ**
+- Preparar el sistema para un posible despliegue en entornos como **AWS Lambda** o **AWS EventBridge** sin necesidad de reescribir la lógica de negocio
+
+Esta arquitectura mejora la mantenibilidad, escalabilidad y portabilidad del sistema.
 
 ### Flujo de eventos y acciones
 
@@ -91,7 +103,38 @@ Este proyecto implementa una comunicación efectiva entre los microservicios `bo
 
 ---
 
-### 📸 Ejemplos visuales
+### 🔐 Acceso al Config Server
+
+Este proyecto utiliza **Spring Cloud Config Server**, el cual se conecta a un repositorio privado de GitHub mediante autenticación **SSH**.
+
+> ⚠️ Por razones de seguridad, la clave privada (`privateKey`) ha sido removida del proyecto y **no debe colocarse directamente** en el archivo `application.yml`.
+
+📦 En entornos productivos, esta clave debe manejarse de forma segura usando:
+
+- **Variables de entorno** (ej. `SPRING_CLOUD_CONFIG_SERVER_GIT_PRIVATE_KEY`)
+- O mediante un **Vault** seguro (como **HashiCorp Vault**, **AWS Secrets Manager**, **Docker secrets**, etc.)
+
+Esto garantiza que las credenciales sensibles no se expongan en el código ni en repositorios públicos.  
+En este proyecto, se deja una plantilla simulada como demostración de cómo se configuraría.
+
+```yaml
+
+# Ejemplo ilustrativo (no funcional sin la clave)
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: git@github.com:tuusuario/tu-repo-config.git
+          private-key: |
+            -----BEGIN RSA PRIVATE KEY----- 
+            [REMOVIDA]
+            -----END RSA PRIVATE KEY-----
+```
+
+📌 Si deseas ejecutar el proyecto por completo, puedes reemplazar esa parte con tu propia clave privada o adaptar el acceso al repositorio con HTTPS y token personal.
+
+## 📸 Ejemplos visuales
 
 En esta sección se agregarán imágenes de:
 
