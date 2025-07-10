@@ -28,7 +28,7 @@ Este sistema está compuesto por los siguientes servicios:
 - **Spring Security + Keycloak + OAuth2.0**
 - **Feign Client**
 - **Eureka Server**
-- **Config Server** (con repositorio de GitHub)
+- **Spring Cloud Config Server** con conexión al repositorio de GitHub vía **SSH**
 - **Apache Kafka** (event-driven communication con funciones)
 - **Spring Cloud Gateway**
 - **Spring Data JPA**
