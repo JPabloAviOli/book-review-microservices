@@ -120,6 +120,24 @@ Este endpoint permite registrar un nuevo libro en el sistema.
 
 ![crear-libro](https://github.com/user-attachments/assets/7c0c482a-f614-4e2e-a3a1-2aae935798d8)
 
+## 📘 Manejo de mensajes de error personalizados con Validation al crear un libro(Book) o una Calificación(Review)
+
+Al enviar datos inválidos al crear un libro, el sistema valida automáticamente el contenido del cuerpo (`request body`) mediante anotaciones de **Bean Validation** (`@NotBlank`, `@Size`, etc.) en los DTOs.
+
+Cuando ocurre un error de validación, se lanza una excepción controlada que es interceptada por un manejador global, el cual retorna una respuesta estructurada y clara al cliente.
+
+🔧 Este manejo personalizado de errores:
+
+- Utiliza `@RestControllerAdvice` y `@ExceptionHandler` para centralizar la lógica de excepciones
+- Retorna un JSON con mensaje de error, campos inválidos y códigos HTTP apropiados
+- Mejora la experiencia del cliente (por ejemplo: aplicaciones frontend como Angular)
+
+📸 En la imagen se muestra un ejemplo de error al enviar un título vacío al crear un libro. La respuesta contiene:
+
+- `statusCode: 400 Bab Request`
+
+![validacion](https://github.com/user-attachments/assets/81337275-e1ef-4c57-b856-8aa00652a79d)
+
 ## 📘 Crear review (POST /api/reviews)
 
 Este endpoint permite registrar una review a un libro en el sistema mediante el id del libro.
@@ -238,6 +256,7 @@ El microservicio `book-ms`, al recibir este evento, realiza las siguientes accio
 ![Captura de Pantalla 2025-07-09 a la(s) 19 39 34](https://github.com/user-attachments/assets/f275a1a2-1942-43f2-8e5a-250bf1b6634e)
 
 ---
+
 ### 🗑️ 2. Eliminación de una review
 
 - **Método:** `DELETE`
@@ -263,6 +282,7 @@ El microservicio `book-ms` responde realizando:
 ![Captura de Pantalla 2025-07-09 a la(s) 19 41 06](https://github.com/user-attachments/assets/be2e5215-6821-42e2-957d-359820fa996f)
 
 ---
+
 ## 📚 Documentación Swagger (OpenAPI)
 
 Cada microservicio expone su propia documentación OpenAPI mediante Swagger, lo que facilita la visualización y prueba de los endpoints directamente desde el navegador.
@@ -277,10 +297,12 @@ Para efectos de demostración, en este proyecto se expusieron los puertos HTTP d
 📸 A continuación se muestran las capturas de ambas interfaces:
 
 - `book-ms`: muestra endpoints para crear, listar, actualizar, eliminar y obtener libros
+
 ![Captura de Pantalla 2025-07-06 a la(s) 19 08 26](https://github.com/user-attachments/assets/70c59b21-9338-4979-b275-f2cfd89459a0)
 ![Captura de Pantalla 2025-07-06 a la(s) 19 09 06](https://github.com/user-attachments/assets/01b25167-b65b-4615-8f0f-95ece032642d)
 
 - `review-ms`: permite crear, actualizar, listar y eliminar reviews
+
 ![Captura de Pantalla 2025-07-06 a la(s) 19 41 24](https://github.com/user-attachments/assets/ee5f4cca-b3a0-4a85-bdca-535a96c4de09)
 ![Captura de Pantalla 2025-07-06 a la(s) 19 41 35](https://github.com/user-attachments/assets/9f8c343c-7fdc-4973-9741-2d35989263e3)
 
