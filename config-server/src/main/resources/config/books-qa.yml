@@ -1,0 +1,5 @@
+build:
+  version: "v2.0.0"
+
+books:
+  message: "Welcome to Library Books related QA APIs"

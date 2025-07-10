@@ -1,0 +1,6 @@
+build:
+  version: "v1.0.0"
+
+books:
+  message: "Welcome to Library Books related local APIs"
+

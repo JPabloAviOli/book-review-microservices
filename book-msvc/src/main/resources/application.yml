@@ -1,0 +1,94 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: books
+  profiles:
+    active: "prod"
+  datasource:
+    url: jdbc:h2:mem:bookdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    function:
+      definition: updateBookFromReviewEvent
+    stream:
+      bindings:
+        # Escuchar cuando una review sea agregada a un libro
+        updateBookFromReviewEvent-in-0:
+          destination: review-events-output
+          group: ${spring.application.name}
+        # Enviar eventos de book
+        sendBookEvent-out-0:
+          destination: book-events-input
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+  data:
+    web:
+      pageable:
+        default-page-size: 6
+        one-indexed-parameters: true
+        page-parameter: p
+        size-parameter: sz
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+info:
+  app:
+    name: "books-msvc"
+    description: "Library Application"
+    version: "1.0.0"
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+  pattern:
+    console: ${LOG_PATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
+

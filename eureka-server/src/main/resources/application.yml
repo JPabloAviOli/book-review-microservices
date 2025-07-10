@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: eureka-server
+  config:
+    import: optional:configserver:http://localhost:8071
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true

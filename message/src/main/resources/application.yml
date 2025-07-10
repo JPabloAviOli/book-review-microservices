@@ -1,0 +1,29 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: message
+  cloud:
+    function:
+      definition: reviewEventPublisher;bookDeletedEvent
+    stream:
+      bindings:
+        # Escucha eventos de review
+        reviewEventPublisher-in-0:
+          destination: review-events-input
+          group: message-group-review
+        # Envía eventos a la cola
+        reviewEventPublisher-out-0:
+          destination: review-events-output
+        # Escucha eventos de book
+        bookDeletedEvent-in-0:
+          destination: book-events-input
+          group: message-group-book
+        # Envía eventos a la cola
+        bookDeletedEvent-out-0:
+          destination: book-events-output
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+

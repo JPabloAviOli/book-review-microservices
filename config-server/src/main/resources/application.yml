@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: "git@github.com:JPabloAviOli/pavila-config-server.git"
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+          ignore-local-ssh-settings: true
+          privateKey:
+            # Esta es una demostración de cómo conectar el Config Server vía SSH.
+            # La clave privada fue eliminada por seguridad.
+            |
+            -----BEGIN RSA PRIVATE KEY----- 
+            [REMOVIDA]
+            -----END RSA PRIVATE KEY-----
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+
+encrypt:
+  key: "MTlLRVlQQVNTV09SRExJQlJBUlkxOQ=="
+
+
+server:
+  port: 8071

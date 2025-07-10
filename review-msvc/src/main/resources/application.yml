@@ -1,0 +1,92 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: reviews
+  profiles:
+    active: "prod"
+  datasource:
+    url: jdbc:h2:mem:reviewdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    function:
+      definition: deleteReviewsFromDeletedBook
+    stream:
+      bindings:
+        # Escuchar cuando un libro sea eliminado
+        deleteReviewsFromDeletedBook-in-0:
+          destination: book-events-output
+          group: ${spring.application.name}
+        # Enviar eventos de review
+        sendReviewEvent-out-0:
+          destination: review-events-input
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+info:
+  app:
+    name: "reviews-msvc"
+    description: "Library Application"
+    version: "1.0.0"
+
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
+  pattern:
+    console: ${LOG_PATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
+
+
+

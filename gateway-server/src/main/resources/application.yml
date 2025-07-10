@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: gateway-server
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+              lowerCaseServiceId: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:8070/realms/master/protocol/openid-connect/certs"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: "gateway-server"
+    description: "Library Gateway Server Application"
+    version: "4.0.0"
+
+logging:
+  level:
+    com:
+      pavila:
+        gatewayserver: DEBUG
