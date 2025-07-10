@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 version = "v1",
                 license = @License(
                         name = "MIT License",
-                        url = "https://opensource.org/licenses/MIT"
+                        url = "https://github.com/JPabloAviOli/book-review-microservices?tab=MIT-1-ov-file"
         )
 
         ),
