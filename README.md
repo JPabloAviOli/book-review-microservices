@@ -223,6 +223,8 @@ Para localizar recursos (libros) se utiliza el endpoint de paginación que recib
 
 Cuando se modifica el `rating` de una review existente, se dispara un evento Kafka con la siguiente información:
 
+![Captura de Pantalla 2025-07-09 a la(s) 19 39 14](https://github.com/user-attachments/assets/67bb9cbb-e02d-4890-a999-26a279e2a9d2)
+
 - **ID del libro asociado**
 - **Tipo de evento:** `"RATING_UPDATE"`
 
@@ -233,6 +235,8 @@ El microservicio `book-ms`, al recibir este evento, realiza las siguientes accio
 
 📸 En la imagen se muestra la solicitud con el nuevo rating y la respuesta exitosa.
 
+![Captura de Pantalla 2025-07-09 a la(s) 19 39 34](https://github.com/user-attachments/assets/f275a1a2-1942-43f2-8e5a-250bf1b6634e)
+
 ---
 ### 🗑️ 2. Eliminación de una review
 
@@ -242,7 +246,7 @@ El microservicio `book-ms`, al recibir este evento, realiza las siguientes accio
 
 📸 En la imagen se muestra la solicitud y la respuesta exitosa.
 
-![eliminar-review](https://github.com/user-attachments/assets/aab0055a-7b09-448b-916d-d1616eee4cd2)
+![Captura de Pantalla 2025-07-09 a la(s) 19 40 28](https://github.com/user-attachments/assets/fb09916a-a3ac-4d38-b71b-2287cf63e03c)
 
 Cuando se elimina una review, se envía un evento Kafka con:
 
@@ -255,6 +259,8 @@ El microservicio `book-ms` responde realizando:
 - Disminución del `ratingCount` (ya que hay una review menos)
 
 📸 La imagen muestra la ejecución del `DELETE`, la respuesta del servidor y el efecto reflejado al consultar el libro actualizado.
+
+![Captura de Pantalla 2025-07-09 a la(s) 19 41 06](https://github.com/user-attachments/assets/be2e5215-6821-42e2-957d-359820fa996f)
 
 ---
 ## 📚 Documentación Swagger (OpenAPI)
